@@ -1,22 +1,37 @@
 from random import *
 import module1
-import matplotlib.pyplot as plt
-global TF
+import numpy as np
+
+hits = 0
+N = 1000 # количество выстрелов
 
 # сохранение результатов 
 log = open("test_log.txt", "r+")
 def save_log(a,x,y):
-    log.write(str(TF)+ "  " + str(x)+ "  " + str(y)+ "  " + str(r) + "\n")
+    log.write(str(module1.fp(x, y, r))+ "  " + str(x)+ "  " + str(y)+ "  " + str(r) + "\n")
 
-for i in range(20):
+for i in range(N):
     TF = 0
-    x = randint(-40,40)
-    y = randint(-40,40)
-    r = randint(-40,40)
+    r = 30
+    xm = np.round(np.random.uniform(-r-1/30*r, r+1/30*r, N),2)
+    ym = np.round(np.random.uniform(-r-1/30*r, r+1/30*r, N),2)
+# x,y, r = map(int, input().split()) #ручной ввод
+for i in range(N):
+        x = xm[i]
+        y = ym[i]
+        if (module1.fp(x,y,r)) == True:
+            i+=1
+            hits += 1
+            save_log("True ",x,y)
+        else:
+             save_log("False ",x,y)
+# область пристрелки x in range (-r-1/30*r, r+1/30*r) y in range (-r-1/30*r, r+1/30*r)
 
-    # x,y, r = map(int, input().split()) #ручной ввод
-    module1.fp(x,y,r)
-    save_log(TF,x,y)
-    i+=1
+
+probability = hits / N
+
+print(f"Количество выстрелов: {N}")
+print(f"Количество попаданий: {hits}")
+print(f"Вероятность попадания: {probability:.4f}")
 
 log.close()
