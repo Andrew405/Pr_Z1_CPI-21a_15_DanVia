@@ -6,7 +6,7 @@ hits = 0
 N = 1000 # количество выстрелов
 
 # сохранение результатов 
-log = open("test_log.txt", "r+")
+log = open("test_log.txt", "w+")
 def save_log(a,x=None,y=None):
     if x == None and y == None:
         log.write("Некорректные геометрические параметры")
@@ -30,6 +30,7 @@ for i in range(N):
     xm = np.round(np.random.uniform(-G[0]-1/30*G[0], G[0]+1/30*G[0], N),2)
     ym = np.round(np.random.uniform(-G[0]-1/30*G[0], G[0]+1/30*G[0], N),2)
 # x,y, r = map(int, input().split()) #ручной ввод
+
 for i in range(N):
         x = xm[i]
         y = ym[i]
