@@ -5,7 +5,7 @@ import pandas as pd
 import openpyxl
 
 hits = 0
-N = 50 # количество выстрелов
+N = 500 # количество выстрелов
 
 # сохранение результатов 
 log = open("test_log.txt", "w+")
@@ -38,6 +38,7 @@ for i in range(N):
         y = ym[i]
         if module1.fp(x, y, G) == 404:
             save_log("Некорректные геометрические параметры")
+            print("Некорректные геометрические параметры")
             break
         elif (module1.fp(x,y,G)) == True:
             i+=1
@@ -49,37 +50,39 @@ for i in range(N):
 
 A = []
 A.insert(0, ["№", "X", "Y", "P"])
-for i in range(N):
-    x = xm[i]
-    y = ym[i]
-    A.append([int(i+1), float(x), float(y), module1.fp(x, y, G)])
-# print(A)
-AMatr = np.matrix(A)
-# print(AMatr)    #Создание Матрицы numpy
+if len(G) == 1:
+    for i in range(N):
+        x = xm[i]
+        y = ym[i]
+        A.append([int(i+1), float(x), float(y), module1.fp(x, y, G)])
+    # print(A)
+    AMatr = np.matrix(A)
+    # print(AMatr)    #Создание Матрицы numpy
 
 B = []
 B.insert(0, ["X", "Y", "P"])
-for i in range(N):
-    x = xm[i]
-    y = ym[i]
-    B.append([float(x), float(y), module1.fp(x, y, G)])
-# print(B)
-BMatr = pd.DataFrame(B)
-# print(BMatr)        # Создание Датафрейма pandas
+if len(G) == 1:
+    for i in range(N):
+        x = xm[i]
+        y = ym[i]
+        B.append([float(x), float(y), module1.fp(x, y, G)])
+    # print(B)
+    BMatr = pd.DataFrame(B)     # Создание Датафрейма panda
+    # print(BMatr)        
+    BMatr.to_csv('BMatr.csv', header= False, index= False, sep= ';')
+    BMatr.to_excel('BMatr.xlsx', index= False, header= False)    # Вывод Датафрейма в .csv и .xlsx файлы
 
-pd.DataFrame(B).to_csv('BMatr.csv', header= False, index= False, sep= ';')
-pd.DataFrame(B).to_excel('BMatr.xlsx', index= False, header= False)    # Вывод Датафрейма в .csv и .xlsx файлы
+    Bcsv = pd.read_csv('BMatr.csv', delimiter= ';')
+    print(Bcsv)
 
-Bcsv = pd.read_csv('BMatr.csv', delimiter= ';')
-print(Bcsv)
-
-Bxlsx = pd.read_excel('BMatr.xlsx')
-print(Bxlsx)
+    # Bxlsx = pd.read_excel('BMatr.xlsx')
+    # print(Bxlsx)
 
 probability = (hits / N)*100
 
-print(f"Количество выстрелов: {N}")
-print(f"Количество попаданий: {hits}")
-print(f"Вероятность попадания: {probability:.2f}%")
+if len(G) == 1:
+    print(f"Количество выстрелов: {N}")
+    print(f"Количество попаданий: {hits}")
+    print(f"Вероятность попадания: {probability:.2f}%")
 
 log.close()

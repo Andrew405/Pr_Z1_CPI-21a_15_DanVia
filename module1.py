@@ -8,5 +8,4 @@ def fp(x,y,G):
             TF = False
         return TF
     else:
-        print("Некорректные геометрические параметры")
         return 404
