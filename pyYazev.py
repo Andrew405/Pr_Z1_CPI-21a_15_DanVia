@@ -65,11 +65,16 @@ for i in range(N):
     B.append([float(x), float(y), module1.fp(x, y, G)])
 # print(B)
 BMatr = pd.DataFrame(B)
-print(BMatr)
+# print(BMatr)        # Создание Датафрейма pandas
 
-pd.DataFrame(B).to_csv('BMatr.csv', header= False, index= False, sep= ';', decimal= 2)
-pd.read_csv('BMatr.csv', parse_dates= False)
+pd.DataFrame(B).to_csv('BMatr.csv', header= False, index= False, sep= ';')
 pd.DataFrame(B).to_excel('BMatr.xlsx', index= False, header= False)    # Вывод Датафрейма в .csv и .xlsx файлы
+
+Bcsv = pd.read_csv('BMatr.csv', delimiter= ';')
+print(Bcsv)
+
+Bxlsx = pd.read_excel('BMatr.xlsx')
+print(Bxlsx)
 
 probability = (hits / N)*100
 
