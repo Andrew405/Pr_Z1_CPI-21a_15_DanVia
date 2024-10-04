@@ -35,7 +35,7 @@ if choice > 0 and choice < 4:           # Защита от дурака
             ym = np.round(np.random.uniform(-G[0]-1/30*G[0], G[0]+1/30*G[0], N),2)
         # x,y, r = map(int, input().split()) #ручной ввод
 
-        for i in range(N):
+        for i in range(N):                  #Создание списков координат
                 x = xm[i]
                 y = ym[i]
                 if (module1.fp(x,y,G)) == True:
