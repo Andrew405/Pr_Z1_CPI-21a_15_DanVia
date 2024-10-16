@@ -5,7 +5,7 @@ import pandas as pd
 import openpyxl
 
 hits = 0
-N = 500 # количество выстрелов
+N = 100 # количество выстрелов
 
 # сохранение результатов 
 log = open("test_log.txt", "w+")
@@ -14,6 +14,8 @@ def save_log(a,x=None,y=None):
         log.write("Некорректные геометрические параметры")
     else:
         log.write(str(module1.fp(x, y, G))+ "  " + str(x)+ "  " + str(y)+ "  " + str(G[0]) + "\n")
+
+prob = open("Probability.txt", "+a")
 
 G = []
 print("Выберите режим: ")
@@ -28,12 +30,19 @@ if choice > 0 and choice < 4:           # Защита от дурака
         G.append(int(input()))
     G = tuple(G)
 
-    if choice == 1:                     # Проверка корректности геометрических данных
-        for i in range(N):
-            TF = 0
-            xm = np.round(np.random.uniform(-G[0]-1/30*G[0], G[0]+1/30*G[0], N),2)
-            ym = np.round(np.random.uniform(-G[0]-1/30*G[0], G[0]+1/30*G[0], N),2)
-        # x,y, r = map(int, input().split()) #ручной ввод
+    if choice == 1: 
+        if N >= 50:                    # Проверка корректности геометрических данных
+            for i in range(N):
+                TF = 0
+                xm = np.round(np.random.uniform(-G[0]-(1/30)*G[0], G[0]+(1/30)*G[0], N),2)
+                ym = np.round(np.random.uniform(-G[0]-(1/30)*G[0], G[0]+(1/30)*G[0], N),2)
+            # x,y, r = map(int, input().split()) #ручной ввод
+        else:
+            for i in range(N):
+                TF = 0
+                xm = np.round(np.random.uniform(-G[0], G[0], N),2)
+                ym = np.round(np.random.uniform(-G[0], G[0], N),2)
+            # x,y, r = map(int, input().split()) #ручной ввод
 
         for i in range(N):                  #Создание списков координат
                 x = xm[i]
@@ -75,11 +84,13 @@ if choice > 0 and choice < 4:           # Защита от дурака
         # Bxlsx = pd.read_excel('BMatr.xlsx')
         # print(Bxlsx)
 
-        probability = (hits / N)*100
+        probability = (hits / N)
 
         print(f"Количество выстрелов: {N}")
         print(f"Количество попаданий: {hits}")
-        print(f"Вероятность попадания: {probability:.2f}%")
+        print(f"Вероятность попадания: {100*probability:.2f}%")
+        prob.write(f"Вероятность попадания: {probability:.2f}" + "\n")
+        print("Теоретическая вероятность попадания = 0,234")
     else:
         print("Некорректные геометрические параметры")
         save_log("Некорректные геометрические параметры")
